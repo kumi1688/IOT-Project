@@ -1,23 +1,32 @@
 <template>
   <v-container>
     <v-row justify="space-around">
-      <h2>{{ this.hueNumber }}번 전구</h2>
+      <v-col>
+        <h2>{{ this.hueNumber }}번 전구</h2>
+        <v-color-picker
+          @input="setColor"
+          class="ma-2"
+          hide-mode-switch
+          v-model="currentColorRGB"
+        />
+      </v-col>
+      <v-col>
+        <v-switch
+          v-model="currentPower"
+          :label="currentPower ? '켜짐' : '꺼짐'"
+        ></v-switch>
+        <v-slider
+          v-model="currentTemperature"
+          min="153"
+          max="500"
+          label="색 온도"
+        ></v-slider>
 
-      <v-switch
-        v-model="currentPower"
-        :label="currentPower ? '켜짐' : '꺼짐'"
-      ></v-switch>
-
-      <h2>hue : {{ this.currentColorHSV.hue }}</h2>
-      <h2>saturation : {{ this.currentColorHSV.saturation }}</h2>
-      <h2>brightness : {{ this.currentColorHSV.brightness }}</h2>
-      <h2>온도 : {{ temperature.properties.value }}</h2>
-      <v-color-picker
-        @input="setColor"
-        class="ma-2"
-        hide-mode-switch
-        v-model="currentColorRGB"
-      />
+        <h2>hue : {{ this.currentColorHSV.hue }}</h2>
+        <h2>saturation : {{ this.currentColorHSV.saturation }}</h2>
+        <h2>brightness : {{ this.currentColorHSV.brightness }}</h2>
+        <h2>온도 : {{ this.currentTemperature }}</h2>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -37,9 +46,20 @@ export default {
   watch: {
     currentPower() {
       console.log(this.currentPower);
-      axios.put("/api/power", {
-        on: this.currentPower,
-        number: this.hueNumber
+      const hueUrl =
+        "http://210.107.205.200:8080/api/wkcBD-lTULsGrCJ2hqZZqgeQsfathjs6zc3Rul1O/lights";
+      axios.put(`${hueUrl}/${this.hueNumber}/state`, {
+        on: this.currentPower
+        // number: this.hueNumber
+      });
+    },
+    currentTemperature() {
+      console.log(this.currentTemperature);
+      const hueUrl =
+        "http://210.107.205.200:8080/api/wkcBD-lTULsGrCJ2hqZZqgeQsfathjs6zc3Rul1O/lights";
+      axios.put(`${hueUrl}/${this.hueNumber}/state`, {
+        ct: this.currentTemperature
+        // number: this.hueNumber
       });
     }
   },
@@ -80,17 +100,16 @@ export default {
         saturation: parseInt(result[1], 10),
         brightness: parseInt(result[2], 10)
       };
-      // axios.put("/api/hue", {
-      //   number: this.hueNumber,
-      //   on: true,
-      //   hue: parseInt(result[0], 10),
-      //   saturation: parseInt(result[1], 10),
-      //   brightness: parseInt(result[2], 10)
-      // });
+      const hueUrl =
+        "http://210.107.205.200:8080/api/wkcBD-lTULsGrCJ2hqZZqgeQsfathjs6zc3Rul1O/lights";
+      axios.put(`${hueUrl}/${this.hueNumber}/state`, {
+        // number: this.hueNumber,
+        on: true,
+        hue: parseInt(result[0], 10),
+        saturation: parseInt(result[1], 10),
+        brightness: parseInt(result[2], 10)
+      });
       console.log(this.currentColorHSV);
-    },
-    changePower() {
-      console.log("changePower");
     }
   },
   data() {
@@ -98,6 +117,7 @@ export default {
       currentColorRGB: "",
       currentColorHSV: {},
       currentPower: false,
+      currentTemperature: 153,
       color: null,
       power: null,
       temperature: null,

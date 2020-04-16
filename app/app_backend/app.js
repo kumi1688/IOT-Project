@@ -43,11 +43,11 @@ const socket = app.io.on("connection", function () {
   console.log("웹 소켓 연결됨");
 
   let count = 0;
-  setInterval(() => {
-    socket.emit("bulbState", {
-      data: `전구 상태 : ${count++}`,
-    });
-  }, 2000);
+  // setInterval(() => {
+  //   socket.emit("bulbState", {
+  //     data: `전구 상태 : ${count++}`,
+  //   });
+  // }, 2000);
 });
 
 module.exports = app;
