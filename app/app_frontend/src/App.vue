@@ -7,7 +7,7 @@
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
+            <v-list-item-title>전구</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item link>
@@ -15,7 +15,7 @@
             <v-icon>mdi-contact-mail</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Contact</v-list-item-title>
+            <v-list-item-title>날씨</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -23,7 +23,7 @@
 
     <v-app-bar app color="indigo" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title>Application</v-toolbar-title>
+      <v-toolbar-title>기기제어</v-toolbar-title>
     </v-app-bar>
 
     <v-content>

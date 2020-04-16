@@ -110,22 +110,34 @@ router.get("/", function (req, res, next) {
 
 const hueBaseUrl =
   "http://210.107.205.200:8080/api/wkcBD-lTULsGrCJ2hqZZqgeQsfathjs6zc3Rul1O/lights";
-router.put("/hue", function (req, res) {
+
+router.put("/hue/color", function (req, res) {
   // console.log(req.body);
   const number = req.body.number;
   const data = req.body;
   delete data.number;
   console.log(data);
   axios.put(`${hueBaseUrl}/${number}/state`, data);
+  res.sendStatus(200);
 });
 
-router.put("/power", function (req, res) {
+router.put("/hue/temperature", function (req, res) {
+  const number = req.body.number;
+  const data = req.body;
+  delete data.number;
+  console.log(data);
+  axios.put(`${hueBaseUrl}/${number}/state`, data);
+  res.sendStatus(200);
+});
+
+router.put("/hue/power", function (req, res) {
   // console.log(req.body);
   const number = req.body.number;
   const data = req.body;
   delete data.number;
   console.log(data);
   axios.put(`${hueBaseUrl}/${number}/state`, data);
+  res.sendStatus(200);
 });
 
 module.exports = router;

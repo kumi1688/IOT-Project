@@ -46,20 +46,26 @@ export default {
   watch: {
     currentPower() {
       console.log(this.currentPower);
-      const hueUrl =
-        "http://210.107.205.200:8080/api/wkcBD-lTULsGrCJ2hqZZqgeQsfathjs6zc3Rul1O/lights";
-      axios.put(`${hueUrl}/${this.hueNumber}/state`, {
-        on: this.currentPower
-        // number: this.hueNumber
+
+      axios.put(`/api/hue/power`, {
+        on: this.currentPower,
+        number: this.hueNumber
       });
+
+      // axios.put('/api/hue/power', {
+      //   power : this.currentPower,
+      //   hue: this.currentColorHSV.hue,
+      //   saturation: this.currentColorHSV.saturation,
+      //   brightness: this.currentColorHSV.brightness,
+      //   colorTemperature: this.colorTemperature
+      // })
     },
     currentTemperature() {
       console.log(this.currentTemperature);
-      const hueUrl =
-        "http://210.107.205.200:8080/api/wkcBD-lTULsGrCJ2hqZZqgeQsfathjs6zc3Rul1O/lights";
-      axios.put(`${hueUrl}/${this.hueNumber}/state`, {
-        ct: this.currentTemperature
-        // number: this.hueNumber
+
+      axios.put("/api/hue/temperature", {
+        ct: this.currentTemperature,
+        number: this.hueNumber
       });
     }
   },
@@ -100,10 +106,9 @@ export default {
         saturation: parseInt(result[1], 10),
         brightness: parseInt(result[2], 10)
       };
-      const hueUrl =
-        "http://210.107.205.200:8080/api/wkcBD-lTULsGrCJ2hqZZqgeQsfathjs6zc3Rul1O/lights";
-      axios.put(`${hueUrl}/${this.hueNumber}/state`, {
-        // number: this.hueNumber,
+
+      axios.put("/api/hue/color", {
+        number: this.hueNumber,
         on: true,
         hue: parseInt(result[0], 10),
         saturation: parseInt(result[1], 10),
