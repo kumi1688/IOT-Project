@@ -36,9 +36,10 @@ import { rgbToHsv, HSBToRGB } from "./rgbToHue";
 import axios from "axios";
 
 export default {
-  props: ["bulbState", "number"],
+  props: ["bulbState", "number", "routePath"],
   created() {
     console.log(this.bulbState);
+    console.log(this.routePath);
 
     this.updateBulbState();
     this.hueNumber = this.getHueNumber(this.bulbState[0]);
@@ -46,26 +47,25 @@ export default {
   watch: {
     currentPower() {
       console.log(this.currentPower);
+      // `/api/hue/power`
 
-      axios.put(`/api/hue/power`, {
-        on: this.currentPower,
-        number: this.hueNumber
+      axios.put(`/api/${this.routePath}/${this.hueNumber}`, {
+        power: this.currentPower,
+        hue: this.currentColorHSV.hue,
+        saturation: this.currentColorHSV.saturation,
+        brightness: this.currentColorHSV.brightness,
+        colorTemperature: this.colorTemperature
       });
-
-      // axios.put('/api/hue/power', {
-      //   power : this.currentPower,
-      //   hue: this.currentColorHSV.hue,
-      //   saturation: this.currentColorHSV.saturation,
-      //   brightness: this.currentColorHSV.brightness,
-      //   colorTemperature: this.colorTemperature
-      // })
     },
     currentTemperature() {
       console.log(this.currentTemperature);
-
-      axios.put("/api/hue/temperature", {
-        ct: this.currentTemperature,
-        number: this.hueNumber
+      // "/api/hue/temperature"
+      axios.put(`/api/${this.routePath}/${this.hueNumber}`, {
+        power: this.currentPower,
+        hue: this.currentColorHSV.hue,
+        saturation: this.currentColorHSV.saturation,
+        brightness: this.currentColorHSV.brightness,
+        colorTemperature: this.colorTemperature
       });
     }
   },
@@ -107,12 +107,13 @@ export default {
         brightness: parseInt(result[2], 10)
       };
 
-      axios.put("/api/hue/color", {
-        number: this.hueNumber,
-        on: true,
-        hue: parseInt(result[0], 10),
-        saturation: parseInt(result[1], 10),
-        brightness: parseInt(result[2], 10)
+      // "/api/hue/color"
+      axios.put(`/api/${this.routePath}/${this.hueNumber}`, {
+        power: this.currentPower,
+        hue: this.currentColorHSV.hue,
+        saturation: this.currentColorHSV.saturation,
+        brightness: this.currentColorHSV.brightness,
+        colorTemperature: this.colorTemperature
       });
       console.log(this.currentColorHSV);
     }
