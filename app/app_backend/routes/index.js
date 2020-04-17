@@ -2,107 +2,6 @@ var express = require("express");
 var router = express.Router();
 const axios = require("axios");
 
-const testData = [
-  {
-    resource: "PhilipsHue.Bridge1.1.1",
-    label: "조명9 Power",
-    properties: {
-      name: "power",
-      type: "enum",
-      enum: ["on", "off"],
-      value: "on",
-    },
-  },
-  {
-    resource: "PhilipsHue.Bridge1.1.1",
-    label: "조명9 Color",
-    properties: {
-      name: "color",
-      type: "object",
-      hue: {
-        type: "integer",
-        minimum: 0,
-        maximum: 65535,
-        value: 40000,
-      },
-      saturation: {
-        type: "integer",
-        minimum: 0,
-        maximum: 254,
-        value: 150,
-      },
-      brightness: {
-        type: "integer",
-        minimum: 0,
-        maximum: 254,
-        value: 50,
-      },
-    },
-  },
-  {
-    resource: "PhilipsHue.Bridge1.1.1",
-    label: "조명9 온도",
-    properties: {
-      name: "colorTemperature",
-      type: "integer",
-      minimum: 2000,
-      maximum: 6500,
-      value: 3000,
-      unit: "k",
-      step: 50,
-    },
-  },
-  {
-    resource: "PhilipsHue.Bridge1.2.1",
-    label: "조명11 power",
-    properties: {
-      name: "power",
-      type: "enum",
-      enum: ["on", "off"],
-      value: "off",
-    },
-  },
-  {
-    resource: "PhilipsHue.Bridge1.2.1",
-    label: "조명11 Color",
-    properties: {
-      name: "color",
-      type: "object",
-      hue: {
-        type: "integer",
-        minimum: 0,
-        maximum: 65535,
-        value: 40000,
-      },
-      saturation: {
-        type: "integer",
-        minimum: 0,
-        maximum: 254,
-        value: 100,
-      },
-      brightness: {
-        type: "integer",
-        minimum: 0,
-        maximum: 254,
-        value: 200,
-      },
-    },
-  },
-  {
-    resource: "PhilipsHue.Bridge1.2.1",
-    label: "조명11 온도",
-    properties: {
-      name: "colorTemperature",
-      type: "integer",
-      minimum: 2000,
-      maximum: 6500,
-      value: 3000,
-      unit: "k",
-      step: 50,
-    },
-  },
-];
-
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.send(testData);
@@ -143,6 +42,14 @@ router.put("/hue/power/:id", function (req, res) {
   console.log("power");
   // axios.put(`${hueBaseUrl}/${req.params.id}/state`, data);
   res.sendStatus(200);
+});
+
+router.get("/weather", async (req, res) => {
+  const weatherUrl =
+    "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?stationName=%EC%A2%85%EB%A1%9C%EA%B5%AC&dataTerm=month&pageNo=1&numOfRows=10&ServiceKey=fQQmInPFuI3k1pbQjX1BaCfOE6zFzNXa9hXAEs92vl6OI140GB%2BGkwowNuF0YyKuRNTRFy%2F5BWAZb7N0ZfDuUw%3D%3D&ver=1.3&_returnType=json";
+  const result = await axios.get(weatherUrl);
+  console.log(result);
+  res.send(result.data);
 });
 
 module.exports = router;
